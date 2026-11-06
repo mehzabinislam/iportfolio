@@ -1,4 +1,4 @@
-# Clara Vance — Premium Interactive 3D Miniature World Portfolio
+3D Miniature World Portfolio
 
 An interactive 3D portfolio website revolving around a floating island diorama suspended in the sky, featuring a personal workspace studio. Designed with an editorial aesthetic (70% professional & elegant, 30% dreamy & artistic), high-performance Three.js lighting, and smooth cinematic camera choreography.
 
