@@ -22,9 +22,10 @@ export function Navigation({
   const isZoomedIn = activeSection !== 'overview';
 
   const navItems: { id: SectionId; label: string }[] = [
-    { id: 'projects', label: 'Projects' },
+   
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Activities' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'contact', label: 'Contact' },
   ];
@@ -46,7 +47,7 @@ export function Navigation({
               Mehzabin Islam Doua
             </div>
             <div className="text-[10px] md:text-xs text-[#292827]/60 tracking-wider uppercase font-medium">
-              Mathematician
+            Tech Enthusiast & Artist
             </div>
           </div>
         </button>

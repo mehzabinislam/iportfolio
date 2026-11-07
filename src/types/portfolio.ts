@@ -48,6 +48,7 @@ export interface GalleryItem {
   aspectRatio: 'square' | 'portrait' | 'landscape';
   description: string;
   color: string;
+  image: string;
   tags: string[];
 }
 
