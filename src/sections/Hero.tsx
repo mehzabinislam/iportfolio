@@ -14,9 +14,9 @@ export function Hero({ onSelectSection, isOverview }: HeroProps) {
   const { personal } = portfolioData;
 
   const quickSpots: { id: SectionId; icon: typeof Monitor; label: string; desc: string }[] = [
-    { id: 'projects', icon: Monitor, label: 'Projects', desc: 'Laptop' },
     { id: 'about', icon: BookOpen, label: 'About', desc: 'Journal' },
     { id: 'skills', icon: Layers, label: 'Skills', desc: 'Bookshelf' },
+    { id: 'projects', icon: Monitor, label: 'Activities', desc: 'Laptop' },
     { id: 'gallery', icon: Camera, label: 'Gallery', desc: 'Camera' },
     { id: 'contact', icon: Mail, label: 'Contact', desc: 'Mailbox' },
   ];
