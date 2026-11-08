@@ -5,7 +5,10 @@ import { Lighting } from './Lighting';
 import { Island } from './Island';
 import { Clouds } from './Cloud';
 import { AmbientParticles } from './Particles';
-import { CameraController } from './CameraController';
+import { Character } from './character/Character';
+import { JourneyDirector } from './JourneyDirector';
+import { JourneyCamera } from './JourneyCamera';
+import { JourneyDebug } from './JourneyDebug';
 import { CAMERA_VIEWS } from '../../lib/constants';
 import type { SectionId } from '../../types/portfolio';
 
@@ -13,6 +16,7 @@ import type { SectionId } from '../../types/portfolio';
 interface ErrorBoundaryProps {
   fallback: ReactNode;
   children: ReactNode;
+  onError?: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -31,6 +35,7 @@ export class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBound
 
   componentDidCatch(error: Error) {
     console.warn('WebGL Context / 3D Canvas issue caught:', error);
+    this.props.onError?.();
   }
 
   render() {
@@ -40,6 +45,8 @@ export class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBound
     return this.props.children;
   }
 }
+
+const DEBUG = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debug');
 
 interface IslandSceneProps {
   activeSection: SectionId;
@@ -77,7 +84,7 @@ export function IslandScene({
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', touchAction: 'pan-y' }}
       >
         {/* Soft atmospheric depth fog matching warm canvas sky backdrop */}
         <fog attach="fog" args={['#EFEAE4', 16, 45]} />
@@ -101,12 +108,11 @@ export function IslandScene({
           {/* Warm Ambient Floating Motes / Stardust */}
           <AmbientParticles count={isMobile || lowPower ? 30 : 70} lowPower={lowPower} />
 
-          {/* Smooth GSAP & Orbit Controls Camera Controller */}
-          <CameraController
-            activeSection={activeSection}
-            isMobile={isMobile}
-            reducedMotion={reducedMotion}
-          />
+          {/* Scroll-driven journey: locomotion -> character -> cinematic camera */}
+          <JourneyDirector />
+          <Character lowDetail={isMobile || lowPower} reducedMotion={reducedMotion} />
+          <JourneyCamera isMobile={isMobile} reducedMotion={reducedMotion} />
+          {DEBUG && <JourneyDebug />}
         </Suspense>
       </Canvas>
     </div>

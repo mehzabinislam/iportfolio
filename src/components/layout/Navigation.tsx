@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, Sparkles, Compass, ArrowLeft } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Compass, ArrowLeft, Footprints } from 'lucide-react';
 import type { SectionId } from '../../types/portfolio';
 
 
@@ -9,6 +9,8 @@ interface NavigationProps {
   onToggleSound: () => void;
   lowPower: boolean;
   onToggleLowPower: () => void;
+  walkMode: boolean;
+  onToggleWalkMode: () => void;
 }
 
 export function Navigation({
@@ -18,6 +20,8 @@ export function Navigation({
   onToggleSound,
   lowPower,
   onToggleLowPower,
+  walkMode,
+  onToggleWalkMode,
 }: NavigationProps) {
   const isZoomedIn = activeSection !== 'overview';
 
@@ -91,6 +95,21 @@ export function Navigation({
               </kbd>
             </button>
           )}
+
+          {/* Walk Mode Toggle */}
+          <button
+            onClick={onToggleWalkMode}
+            className={`p-2 rounded-full glass-pill text-xs font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#613F4D] ${
+              walkMode
+                ? 'bg-[#613F4D]/15 text-[#613F4D] border-[#613F4D]'
+                : 'text-[#292827]/70 hover:text-[#292827]'
+            }`}
+            title={walkMode ? 'Walking Journey On (click for simple scroll)' : 'Simple Scroll On (click for walking journey)'}
+            aria-label="Toggle Walking Journey"
+            aria-pressed={walkMode}
+          >
+            <Footprints className="w-4 h-4" />
+          </button>
 
           {/* Low Power Mode Toggle */}
           <button
