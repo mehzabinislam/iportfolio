@@ -58,7 +58,14 @@ export function ModalPanel({
             className="fixed inset-y-0 right-0 z-50 w-full md:w-[620px] lg:w-[680px] bg-[#F8F5EF]/95 backdrop-blur-xl border-l border-[#C99B9B]/25 shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Drawer Header */}
-            <div className="px-6 py-5 md:px-8 md:py-6 border-b border-[#C99B9B]/20 flex items-center justify-between gap-4 bg-[#F8F5EF]/60">
+            <motion.div
+              key={`drawer-header-${title}-${subtitle}`}
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="px-6 py-5 md:px-8 md:py-6 border-b border-[#C99B9B]/20 flex items-center justify-between gap-4 bg-[#F8F5EF]/60"
+            >
               <div>
                 <div className="text-[11px] uppercase tracking-widest font-semibold text-[#613F4D]">
                   {subtitle}
@@ -88,11 +95,21 @@ export function ModalPanel({
                   <X className="w-5 h-5" />
                 </button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Scrollable Content Body */}
             <div className="flex-1 overflow-y-auto px-6 py-6 md:px-8 md:py-8 space-y-8">
-              {children}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={`${title}-${subtitle}`}
+                  initial={{ opacity: 0, x: 32 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -32 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                  {children}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </motion.div>
         </>

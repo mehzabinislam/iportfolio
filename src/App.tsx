@@ -74,7 +74,7 @@ export function App() {
 
   // ---------------------------------------------------------------------
   // 2. Scroll -> journey progress. Each "travel" spacer between two panels
-  //    owns one leg of the walk: progress 0..1 while that spacer scrolls
+  //    owns one leg of the camera journey: progress 0..1 while that spacer scrolls
   //    through the viewport. Scrolling back simply runs it in reverse.
   // ---------------------------------------------------------------------
   useEffect(() => {
@@ -122,7 +122,7 @@ export function App() {
     };
   }, [walkMode, webglFailed]);
 
-  // Simple-scroll mode: no walking; the character simply stands at the section in view
+  // Simple-scroll mode: the camera jumps to the section in view
   useEffect(() => {
     if (walkMode) return;
     const observer = new IntersectionObserver(
@@ -145,12 +145,12 @@ export function App() {
     return () => observer.disconnect();
   }, [walkMode, webglFailed]);
 
-  // Walk mode: nav highlight follows whichever stop she is nearest to
+  // Journey mode: nav highlight follows the nearest stop
   useEffect(() => {
     journey.onStopChange = (index: number) => {
       const lock = jumpLock.current;
       if (lock) {
-        if (index !== lock.index) return; // ignore the stops she walks past en route
+        if (index !== lock.index) return; // ignore stops passed during a navigation jump
         window.clearTimeout(lock.timer);
         jumpLock.current = null;
       }
@@ -163,7 +163,7 @@ export function App() {
 
   // ---------------------------------------------------------------------
   // 3. Navigation / 3D-object clicks: scroll to the section; the journey
-  //    system walks her (and the camera) there at a natural pace.
+  //    system moves the camera there at a natural pace.
   // ---------------------------------------------------------------------
   const handleSelectSection = useCallback(
     (id: SectionId) => {
@@ -180,7 +180,7 @@ export function App() {
         timer: window.setTimeout(() => (jumpLock.current = null), 12000),
       };
 
-      // scroll duration scales with how far she has to walk
+      // scroll duration scales with how far the camera travels
       const dist = pathDistance(journey.displayed, index);
       const duration = walkMode ? Math.min(Math.max(dist / 2.1, 1.1), 7) : 1.1;
       const lenis = lenisRef.current;
@@ -218,6 +218,31 @@ export function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleSelectSection]);
 
+  // Clicking outside a section panel returns through the same Overview navigation.
+  useEffect(() => {
+    if (activeSection === 'overview') return;
+
+    const onDocumentClick = (event: MouseEvent) => {
+      const path = event.composedPath();
+      if (
+        path.some(
+          (target) =>
+            target instanceof Element &&
+            target.matches(
+              '[data-section-panel], button, a, input, select, textarea, [role="button"]'
+            )
+        ) || path.some((target) => target instanceof HTMLCanvasElement)
+      ) {
+        return;
+      }
+
+      handleSelectSection('overview');
+    };
+
+    document.addEventListener('click', onDocumentClick);
+    return () => document.removeEventListener('click', onDocumentClick);
+  }, [activeSection, handleSelectSection]);
+
   // dev/test hook (only with ?debug in the URL)
   useEffect(() => {
     if (!new URLSearchParams(window.location.search).has('debug')) return;
@@ -245,7 +270,7 @@ export function App() {
       </div>
 
       {/* Fixed 3D island backdrop. Page scroll (not the canvas) drives everything. */}
-      <div className="fixed inset-0 z-0" role="img" aria-label="Interactive 3D floating island with a guide character">
+      <div className="fixed inset-0 z-0" role="img" aria-label="Interactive 3D floating island">
         {!webglFailed && (
           <WebGLErrorBoundary fallback={null} onError={() => setWebglFailed(true)}>
             <IslandScene
@@ -276,7 +301,7 @@ export function App() {
           const view = CAMERA_VIEWS[id];
           return (
             <div key={id}>
-              {/* travel leg: scrolling through this empty stretch walks her to the next stop */}
+              {/* Scrolling through this space moves the camera to the next stop. */}
               {walkMode && <div data-travel={i} aria-hidden="true" className="h-[70svh]" />}
               <PageSection id={id} title={title ?? view.label} subtitle={view.sublabel} still={!walkMode}>
                 {id === 'about' && <AboutSection />}

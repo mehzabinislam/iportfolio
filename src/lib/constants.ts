@@ -28,7 +28,7 @@ export const CAMERA_VIEWS: Record<SectionId, CameraView> = {
   },
   projects: {
     id: 'projects',
-    label: 'Projects',
+    label: 'Activities',
     sublabel: 'Interactive Computer',
     position: [0.35, 2.35, 1.55],
     target: [0.1, 2.05, 0.4],

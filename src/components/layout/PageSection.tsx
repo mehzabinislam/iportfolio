@@ -12,9 +12,9 @@ interface PageSectionProps {
 
 /**
  * In-flow content panel for a journey stop. It slides/fades in as the
- * character reaches the destination (and out again when scrolling back).
- * Desktop: a right-hand editorial column so the character stays visible on the
- * left. Mobile: a bottom sheet that starts below the visible scene.
+ * camera reaches the destination (and out again when scrolling back).
+ * Desktop: a right-hand content column. Mobile: a bottom sheet that starts
+ * below the visible scene.
  */
 export function PageSection({ id, title, subtitle, children, still = false }: PageSectionProps) {
   return (
@@ -24,10 +24,11 @@ export function PageSection({ id, title, subtitle, children, still = false }: Pa
       className="relative min-h-svh flex flex-col justify-end md:flex-row md:justify-end pointer-events-none"
     >
       <motion.div
-        initial={still ? false : { opacity: 0, y: 48 }}
-        whileInView={still ? undefined : { opacity: 1, y: 0 }}
+        initial={still ? false : { opacity: 0, x: 40 }}
+        whileInView={still ? undefined : { opacity: 1, x: 0 }}
         viewport={{ once: false, amount: 0.12, margin: '0px 0px -12% 0px' }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        data-section-panel
         className="pointer-events-auto w-full md:w-[620px] lg:w-[680px] mt-[44svh] md:mt-0 min-h-[56svh] md:min-h-svh bg-[#F8F5EF]/95 backdrop-blur-xl rounded-t-3xl md:rounded-none md:border-l border-[#C99B9B]/25 shadow-2xl flex flex-col"
       >
         <div className="px-6 pt-7 pb-5 md:px-8 md:pt-28 md:pb-6 border-b border-[#C99B9B]/20 bg-[#F8F5EF]/60 rounded-t-3xl md:rounded-none">

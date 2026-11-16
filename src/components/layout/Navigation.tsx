@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, Sparkles, Compass, ArrowLeft, Footprints } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Compass, ArrowLeft } from 'lucide-react';
 import type { SectionId } from '../../types/portfolio';
 
 
@@ -44,7 +44,7 @@ export function Navigation({
           aria-label="Return to Island Overview"
         >
           <div className="w-8 h-8 rounded-full bg-[#613F4D] flex items-center justify-center text-[#F8F5EF] shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <span className="font-serif text-sm font-semibold italic">C</span>
+            <span className="font-serif text-sm font-semibold italic"></span>
           </div>
           <div>
             <div className="font-serif text-lg md:text-xl font-medium tracking-tight text-[#292827] group-hover:text-[#613F4D] transition-colors">
@@ -96,7 +96,7 @@ export function Navigation({
             </button>
           )}
 
-          {/* Walk Mode Toggle */}
+          {/* Guided Camera Toggle */}
           <button
             onClick={onToggleWalkMode}
             className={`p-2 rounded-full glass-pill text-xs font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#613F4D] ${
@@ -104,11 +104,11 @@ export function Navigation({
                 ? 'bg-[#613F4D]/15 text-[#613F4D] border-[#613F4D]'
                 : 'text-[#292827]/70 hover:text-[#292827]'
             }`}
-            title={walkMode ? 'Walking Journey On (click for simple scroll)' : 'Simple Scroll On (click for walking journey)'}
-            aria-label="Toggle Walking Journey"
+            title={walkMode ? 'Guided Camera On (click for simple scroll)' : 'Simple Scroll On (click for guided camera)'}
+            aria-label="Toggle Guided Camera"
             aria-pressed={walkMode}
           >
-            <Footprints className="w-4 h-4" />
+            <Compass className="w-4 h-4" />
           </button>
 
           {/* Low Power Mode Toggle */}

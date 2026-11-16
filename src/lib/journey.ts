@@ -53,7 +53,7 @@ export const STOPS: StopDef[] = [
     pos: [-0.3, 2.6],
     look: [9, 2.2, 9],
     action: 'wave',
-    cam: { focus: [0.3, 1.25, 0.5], az: 45, el: 26, dist: 17.5, fov: 38 },
+    cam: { focus: [0.3, 1.25, 0.5], az: 45, el: 26, dist: 16.5, fov: 38 },
   },
   {
     id: 'about', // sits in the designer chair and writes in the journal

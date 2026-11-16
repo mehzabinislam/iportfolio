@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { journey } from '../../lib/journeyState';
 import { SEGMENT_COUNT, STOPS, type CamPose } from '../../lib/journey';
 
@@ -9,10 +10,10 @@ const { damp, clamp, lerp, smoothstep } = THREE.MathUtils;
 interface JourneyCameraProps {
   isMobile: boolean;
   reducedMotion: boolean;
+  manualOverview: boolean;
 }
 
 const focusV = new THREE.Vector3();
-const chest = new THREE.Vector3();
 const wantPos = new THREE.Vector3();
 const wantLook = new THREE.Vector3();
 const fwd = new THREE.Vector3();
@@ -38,13 +39,14 @@ function blendPose(a: CamPose, b: CamPose, t: number) {
 
 /**
  * Cinematic observer. Between stops it glides from one composed shot to the
- * next, while its look-at is gradually pulled onto the walking character (most
- * strongly mid-walk), then relaxes into the destination shot on arrival.
+ * next, following the scroll-driven journey between composed shots.
  * Everything is damped, so there are no cuts or jerks. A tiny pointer drift
  * keeps the world feeling alive.
  */
-export function JourneyCamera({ isMobile, reducedMotion }: JourneyCameraProps) {
-  const { camera, size, pointer } = useThree();
+export function JourneyCamera({ isMobile, reducedMotion, manualOverview }: JourneyCameraProps) {
+  const { camera, size, pointer, controls } = useThree();
+  const overviewStateSaved = useRef(false);
+  const wasAtOverview = useRef(false);
   const stateRef = useRef({
     pos: new THREE.Vector3(),
     look: new THREE.Vector3(),
@@ -60,9 +62,8 @@ export function JourneyCamera({ isMobile, reducedMotion }: JourneyCameraProps) {
     const s = stateRef.current;
     const dt = Math.min(dtRaw, journey.maxDt);
     const cam = camera as THREE.PerspectiveCamera;
-    const L = journey.loco;
-
     const p = clamp(journey.displayed, 0, SEGMENT_COUNT);
+    const settledAtOverview = manualOverview && p <= 0.001 && journey.target <= 0.001;
     const seg = Math.min(Math.floor(p), SEGMENT_COUNT - 1);
     const t = p - seg;
     const e = t * t * (3 - 2 * t); // ease between shots
@@ -72,12 +73,11 @@ export function JourneyCamera({ isMobile, reducedMotion }: JourneyCameraProps) {
 
     // pull a little further back on small screens so the island still reads
     const mobileK = isMobile ? 1.5 : 1;
-    // follow weight: strongest mid-walk, zero when settled at a stop
-    const w = reducedMotion ? 0 : 0.82 * Math.pow(Math.sin(Math.PI * t), 0.8);
-    chest.set(L.x, L.y + 1.05, L.z);
-    focusV.set(base.fx, base.fy, base.fz).lerp(chest, w);
+    // Slightly widen the shot while moving between sections.
+    const transitionWeight = reducedMotion ? 0 : 0.82 * Math.pow(Math.sin(Math.PI * t), 0.8);
+    focusV.set(base.fx, base.fy, base.fz);
 
-    const dist = base.dist * mobileK * (1 + 0.22 * w);
+    const dist = base.dist * mobileK * (1 + 0.22 * transitionWeight);
     const az = THREE.MathUtils.degToRad(base.az);
     const el = THREE.MathUtils.degToRad(base.el);
     wantPos.set(
@@ -115,6 +115,9 @@ export function JourneyCamera({ isMobile, reducedMotion }: JourneyCameraProps) {
       s.fov = damp(s.fov, fovWant, 3, dt);
     }
 
+    // Once the composed Overview pose is active, leave the camera to OrbitControls.
+    if (settledAtOverview && overviewStateSaved.current && wasAtOverview.current && !journey.debugCam) return;
+
     cam.position.copy(s.pos);
     cam.lookAt(s.look);
     if (journey.debugCam) {
@@ -140,14 +143,29 @@ export function JourneyCamera({ isMobile, reducedMotion }: JourneyCameraProps) {
       tx = (panelW / 2) * reach - w0 * 0.17 * (1 - reach);
       ty = h0 * 0.13 * (1 - reach);
     }
-    s.ox = journey.snap || reducedMotion ? tx : damp(s.ox, tx, 4, dt);
-    s.oy = journey.snap || reducedMotion ? ty : damp(s.oy, ty, 4, dt);
+    s.ox = journey.snap || reducedMotion || settledAtOverview ? tx : damp(s.ox, tx, 4, dt);
+    s.oy = journey.snap || reducedMotion || settledAtOverview ? ty : damp(s.oy, ty, 4, dt);
     if (Math.abs(s.ox) > 0.5 || Math.abs(s.oy) > 0.5) {
       cam.setViewOffset(w0, h0, s.ox, s.oy, w0, h0);
     } else if (cam.view) {
       cam.clearViewOffset();
     }
     cam.updateProjectionMatrix();
+
+    if (settledAtOverview && !journey.debugCam) {
+      const orbitControls = controls as OrbitControlsImpl | null;
+      if (orbitControls) {
+        if (!overviewStateSaved.current) {
+          orbitControls.saveState();
+          overviewStateSaved.current = true;
+        } else if (!wasAtOverview.current) {
+          orbitControls.reset();
+        }
+        wasAtOverview.current = true;
+      }
+    } else {
+      wasAtOverview.current = false;
+    }
   });
 
   return null;

@@ -1,14 +1,16 @@
-import { Suspense, Component, type ReactNode } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Suspense, Component, useRef, type ReactNode } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { Lighting } from './Lighting';
 import { Island } from './Island';
 import { Clouds } from './Cloud';
 import { AmbientParticles } from './Particles';
-import { Character } from './character/Character';
 import { JourneyDirector } from './JourneyDirector';
 import { JourneyCamera } from './JourneyCamera';
 import { JourneyDebug } from './JourneyDebug';
+import { journey } from '../../lib/journeyState';
 import { CAMERA_VIEWS } from '../../lib/constants';
 import type { SectionId } from '../../types/portfolio';
 
@@ -48,6 +50,33 @@ export class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBound
 
 const DEBUG = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debug');
 
+function OverviewControls({
+  activeSection,
+  controlsRef,
+}: {
+  activeSection: SectionId;
+  controlsRef: React.RefObject<OrbitControlsImpl | null>;
+}) {
+  useFrame(() => {
+    if (controlsRef.current) {
+      controlsRef.current.enabled =
+        activeSection === 'overview' && journey.displayed <= 0.001 && journey.target <= 0.001;
+    }
+  }, -2);
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      makeDefault
+      target={[0.3, 1.25, 0.5]}
+      enableDamping
+      dampingFactor={0.08}
+      minDistance={5}
+      maxDistance={24}
+    />
+  );
+}
+
 interface IslandSceneProps {
   activeSection: SectionId;
   onSelectSection: (id: SectionId) => void;
@@ -66,10 +95,24 @@ export function IslandScene({
   lowPower,
 }: IslandSceneProps) {
   const initialView = CAMERA_VIEWS.overview;
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+
+  const handleWheelCapture = () => {
+    const controls = controlsRef.current;
+    if (!controls?.enabled || !controls.enableZoom) return;
+
+    controls.enableZoom = false;
+    queueMicrotask(() => {
+      if (controlsRef.current === controls) controls.enableZoom = true;
+    });
+  };
 
   return (
-    <div className="w-full h-full relative select-none">
+    <div className="w-full h-full relative select-none" onWheelCapture={handleWheelCapture}>
       <Canvas
+        onPointerMissed={() => {
+          if (activeSection !== 'overview') onSelectSection('overview');
+        }}
         shadows={!lowPower}
         camera={{
           position: initialView.position,
@@ -108,10 +151,14 @@ export function IslandScene({
           {/* Warm Ambient Floating Motes / Stardust */}
           <AmbientParticles count={isMobile || lowPower ? 30 : 70} lowPower={lowPower} />
 
-          {/* Scroll-driven journey: locomotion -> character -> cinematic camera */}
+          {/* Scroll-driven camera journey */}
           <JourneyDirector />
-          <Character lowDetail={isMobile || lowPower} reducedMotion={reducedMotion} />
-          <JourneyCamera isMobile={isMobile} reducedMotion={reducedMotion} />
+          <OverviewControls activeSection={activeSection} controlsRef={controlsRef} />
+          <JourneyCamera
+            isMobile={isMobile}
+            reducedMotion={reducedMotion}
+            manualOverview={activeSection === 'overview'}
+          />
           {DEBUG && <JourneyDebug />}
         </Suspense>
       </Canvas>

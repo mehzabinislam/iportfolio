@@ -11,7 +11,7 @@ export const portfolioData: PortfolioData = {
     location: "Dhaka, Bangladesh",
     timezone: "Bangladesh Standard Time (UTC+6)",
     bio: [
-      "I'm Mehzabin, a high school student interested in pretty much everything that makes you stop and wonder how something works. Mathematics, AI, technology, scientific research, and creative problem-solving are some of my favourite rabbit holes. I enjoy experimenting with Python, exploring web development, working with data, and learning how different ideas connect.",
+      "I'm Mehzabin, a high school sophomore interested in pretty much everything that makes you stop and wonder how something works. Mathematics, AI, technology, scientific research, and creative problem-solving are some of my favourite rabbit holes. I enjoy experimenting with Python, exploring web development, working with data, and learning how different ideas connect.",
       "Outside the technical side of things, I'm also into graphic design, UI/UX, digital art, writing, and creating things that people can actually use. I enjoy mentoring students, working with youth communities, and finding ways to make learning more accessible."
     ],
     philosophy: "A bit about me here",
@@ -234,16 +234,7 @@ export const portfolioData: PortfolioData = {
         "Explained scientific concepts and supported students throughout their learning."
       ]
     },
-    {
-      period: "Nov 2025 — Present",
-      role: "Global Student Ambassador",
-      company: "Crimson Education",
-      location: "Remote",
-      description: "Serving as a Global Student Ambassador and participating in the student ambassador community.",
-      highlights: [
-        "Represent the student community as a Global Student Ambassador."
-      ]
-    },
+   
     {
       period: "Nov 2025 — Present",
       role: "Sub-Head of R&D Department",
