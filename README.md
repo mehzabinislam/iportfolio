@@ -10,17 +10,8 @@ The project brings together real-time 3D graphics, animation, and an editorial-i
 
 ## Overview
 
-Rather than presenting information through a conventional portfolio layout, this project uses a miniature 3D world as its central interface. Visitors can explore different portfolio sections through animated camera transitions and interact with the environment.
+Visitors can explore different portfolio sections through animated camera transitions and interact with the environment.
 
-## Features
-
-- **Interactive 3D Environment** — A floating island featuring miniature scenery and a personal workspace.
-- **Immersive Navigation** — Animated camera transitions between portfolio sections.
-- **Interactive Workspace** — A miniature studio with creative and workstation elements.
-- **Portfolio Sections** — Dedicated sections for projects, experience, education, skills, and contact information.
-- **Creative Gallery** — A collection of traditional and digital artwork.
-- **Responsive Interface** — Layout and navigation designed for different screen sizes.
-- **Performance Options** — Features intended to make the 3D experience more manageable across devices.
 
 ## Technology Stack
 
