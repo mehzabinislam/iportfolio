@@ -2,69 +2,79 @@
 
 An interactive 3D portfolio built around a floating island diorama, combining a miniature workspace, natural scenery, and an immersive browsing experience.
 
-The project brings together 3D web graphics, animation, and an editorial-inspired interface to present personal information, projects, skills, and creative work.
+The project brings together real-time 3D graphics, animation, and an editorial-inspired interface to showcase personal information, projects, experience, skills, and creative work.
 
 ## Live Website
 
-**[Visit the Portfolio](https://iportfolio-orcin.vercel.app/)**
+**[Explore the 3D Portfolio](https://mehzabinislam.github.io/iportfolio/)**
 
+## Overview
+
+Rather than presenting information through a conventional portfolio layout, this project uses a miniature 3D world as its central interface. Visitors can explore different portfolio sections through animated camera transitions and interact with the environment.
 
 ## Features
 
-- **Interactive 3D Environment:** A floating island with detailed miniature scenery and a personal workspace.
-- **Immersive Navigation:** Animated camera transitions between different sections of the portfolio.
-- **Interactive Workspace:** A miniature studio featuring creative and workstation elements.
-- **Personal Portfolio Sections:** Dedicated sections for projects, experience, education, skills, and contact information.
-- **Art Gallery:** A collection of traditional and digital creative work.
-- **Responsive Interface:** Layout and navigation designed for different screen sizes.
-- **Performance Options:** Features intended to make the 3D experience more manageable on different devices.
+- **Interactive 3D Environment** — A floating island featuring miniature scenery and a personal workspace.
+- **Immersive Navigation** — Animated camera transitions between portfolio sections.
+- **Interactive Workspace** — A miniature studio with creative and workstation elements.
+- **Portfolio Sections** — Dedicated sections for projects, experience, education, skills, and contact information.
+- **Creative Gallery** — A collection of traditional and digital artwork.
+- **Responsive Interface** — Layout and navigation designed for different screen sizes.
+- **Performance Options** — Features intended to make the 3D experience more manageable across devices.
 
 ## Technology Stack
 
-- **Frontend:** React 19, TypeScript
-- **Build Tool:** Vite
-- **3D Graphics:** Three.js, React Three Fiber, React Three Drei
-- **Animation:** GSAP, Framer Motion
-- **Styling:** Tailwind CSS 4
-- **Smooth Scrolling:** Lenis
-- **Icons:** Lucide React
+| Category | Technologies |
+|---|---|
+| Frontend | React 19, TypeScript |
+| Build Tool | Vite |
+| 3D Graphics | Three.js, React Three Fiber, React Three Drei |
+| Animation | GSAP, Framer Motion |
+| Styling | Tailwind CSS 4 |
+| Smooth Scrolling | Lenis |
+| Icons | Lucide React |
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js
-- npm
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- npm (included with Node.js)
+- Git
 
 ### Installation
 
-1. Clone the repository:
+**1. Clone the repository**
 
-   ```bash
-   git clone YOUR_GITHUB_REPOSITORY_URL
-   ```
+```bash
+git clone https://github.com/mehzabinislam/iportfolio.git
+```
 
-2. Navigate to the project directory:
+**2. Navigate to the project directory**
 
-   ```bash
-   cd IslandPortfolio
-   ```
+```bash
+cd iportfolio
+```
 
-3. Install dependencies:
+**3. Install dependencies**
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-4. Start the development server:
+**4. Start the development server**
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-5. Open the local URL displayed in your terminal, usually:
+**5. Open the local URL**
 
-   `http://localhost:5173`
+Visit the address displayed in your terminal, usually:
+
+`http://localhost:5173`
 
 ## Available Scripts
 
@@ -77,21 +87,37 @@ The project brings together 3D web graphics, animation, and an editorial-inspire
 
 ## Project Customization
 
-Portfolio content is centralized in:
+Most portfolio content is centralized in:
 
 `src/data/portfolio.ts`
 
-You can update personal information, biography, projects, skills, experience, education, gallery entries, and contact details from this file.
+You can use this file to update:
 
-The 3D environment and interface components can be customized through their respective source files in `src/`.
+- Personal information and biography
+- Projects and achievements
+- Experience and education
+- Skills and other portfolio details
+- Gallery entries and artwork
+- Contact information
+
+The 3D environment, camera behavior, animations, and interface can be customized through their respective components and source files inside `src/`.
 
 ## Deployment
 
-This project is deployed using Vercel.
+The portfolio is hosted on **GitHub Pages**.
 
-Updates pushed to the connected GitHub branch can trigger automatic deployments.
+Deployment is automated through GitHub Actions. When changes are pushed to the `main` branch, the workflow builds the application and publishes the production files to GitHub Pages.
+
+You can view the deployment workflow here:
+
+[GitHub Actions — Deployment](https://github.com/mehzabinislam/iportfolio/actions)
 
 ## Acknowledgements
 
-Built using the React, Three.js, and Vite ecosystem.
+Built with the React, Three.js, and Vite ecosystem.
 
+---
+
+**Repository:** [github.com/mehzabinislam/iportfolio](https://github.com/mehzabinislam/iportfolio)
+
+**Live Portfolio:** [mehzabinislam.github.io/iportfolio](https://mehzabinislam.github.io/iportfolio/)

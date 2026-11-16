@@ -273,7 +273,7 @@ export const portfolioData: PortfolioData = {
     aspectRatio: "portrait",
     description: "A pen illustration.",
     color: "#EEE8DE",
-    image: "/gallery/IMG_1.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/IMG_1.jpg`,
     tags: ["Pen", " Art"]
   },
   {
@@ -283,7 +283,7 @@ export const portfolioData: PortfolioData = {
     aspectRatio: "portrait",
     description: "A pen illustration.",
     color: "#EEE8DE",
-    image: "/gallery/IMG_2.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/IMG_2.jpg`,
     tags: ["Pen", " Art"]
   },
   {
@@ -293,7 +293,7 @@ export const portfolioData: PortfolioData = {
     aspectRatio: "portrait",
     description: "A pen illustration.",
     color: "#EEE8DE",
-    image: "/gallery/IMG_3.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/IMG_3.jpg`,
     tags: ["Pen", " Art"]
   },
   {
@@ -303,7 +303,7 @@ export const portfolioData: PortfolioData = {
     aspectRatio: "portrait",
     description: "A pen illustration.",
     color: "#EEE8DE",
-    image: "/gallery/IMG_4.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/IMG_4.jpg`,
     tags: ["Pen", " Art"]
   }
 ]
